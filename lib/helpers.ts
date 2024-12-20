@@ -14,10 +14,14 @@ export function DateToUTCDate(date: Date) {
   );
 }
 
-export function GetFormatterForCurrency(currency: string) {
-  const locale = currencies.find((c) => c.value === currency)?.locale;
+export function GetFormatterForCurrency(currency: string): Intl.NumberFormat {
+  const currencyData = currencies.find((c) => c.value === currency);
 
-  return new Intl.NumberFormat(locale, {
+  if (!currencyData) {
+    throw new Error(`Currency "${currency}" is not supported.`);
+  }
+
+  return new Intl.NumberFormat(currencyData.locale, {
     style: "currency",
     currency,
   });
