@@ -140,7 +140,7 @@ async function getMonthHistoryData(
   if (!result || result.length === 0) return [];
 
   const history: HistoryData[] = [];
-  const daysInMonth = getDaysInMonth(new Date(year, month - 1));
+  const daysInMonth = getDaysInMonth(new Date(year, month));
   for (let i = 1; i <= daysInMonth; i++) {
     let expense = 0;
     let income = 0;

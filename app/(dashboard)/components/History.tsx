@@ -130,10 +130,11 @@ const History = ({ userSettings }: { userSettings: UserSettings }) => {
                       axisLine={false}
                       padding={{ left: 5, right: 5 }}
                       dataKey={(data) => {
-                        const { year, month } = data;
-                        const date = new Date(year, month);
+                        const { year, month, day } = data;
+                        const yearMonth = new Date(year, month);
+                        const date = new Date(year, month, day);
                         if (timeFrame === "year") {
-                          return date.toLocaleDateString("default", {
+                          return yearMonth.toLocaleDateString("default", {
                             month: "long",
                           });
                         }
