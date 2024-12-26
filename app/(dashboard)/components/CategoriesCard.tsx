@@ -26,8 +26,8 @@ const CategoriesCard = ({ data, type, formatter }: Props) => {
       </CardHeader>
       <div className="flex items-center justify-between gap-2">
         {filteredData.length === 0 ? (
-          <div className="flex h-60 w-full flex-col items-center justify-center">
-            <h1 className="text-3xl font-bold">
+          <div className="flex p-4 w-full flex-col items-center justify-center">
+            <h1 className="text-xl font-bold">
               No data for the selected period
             </h1>
             <p className="">
