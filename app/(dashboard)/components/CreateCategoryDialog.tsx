@@ -1,5 +1,5 @@
 "use client";
-import React, { useCallback, useState } from "react";
+import React, { ReactNode, useCallback, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -40,9 +40,10 @@ import { useTheme } from "next-themes";
 interface Props {
   type: Transaction;
   onSuccessCallback: (category: Category) => void;
+  trigger?: ReactNode;
 }
 
-const CreateCategoryDialog = ({ type, onSuccessCallback }: Props) => {
+const CreateCategoryDialog = ({ type, onSuccessCallback, trigger }: Props) => {
   const [open, setOpen] = useState(false);
   const [popoverOpen, setPopoverOpen] = useState(false); // State untuk Popover
 
@@ -102,13 +103,17 @@ const CreateCategoryDialog = ({ type, onSuccessCallback }: Props) => {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          className="flex gap-2 items-center justify-start rounded-none border-b p-3 text-muted-foreground"
-        >
-          <PlusSquare className="w-4 h-4" />
-          Create new
-        </Button>
+        {trigger ? (
+          trigger
+        ) : (
+          <Button
+            variant="ghost"
+            className="flex gap-2 items-center justify-start rounded-none border-b p-3 text-muted-foreground"
+          >
+            <PlusSquare className="w-4 h-4" />
+            Create new
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogTitle>
