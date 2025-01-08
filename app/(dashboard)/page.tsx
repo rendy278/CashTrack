@@ -35,6 +35,7 @@ const page = async () => {
                 </Button>
               }
               type="income"
+              currentAmount={userSettings.currency}
             />
             <CreateDialogTransaction
               trigger={
@@ -46,6 +47,7 @@ const page = async () => {
                 </Button>
               }
               type="expense"
+              currentAmount={userSettings.currency}
             />
           </div>
         </div>

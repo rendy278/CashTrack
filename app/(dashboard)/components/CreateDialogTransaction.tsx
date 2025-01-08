@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { Transaction } from "@/types/transaction";
-import { ReactNode, useCallback, useState } from "react";
+import { ReactNode, useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -37,14 +37,15 @@ import { Calendar } from "@/components/ui/calendar";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateTransaction } from "../actions/transactions";
 import { toast } from "sonner";
-import { DateToUTCDate } from "@/lib/helpers";
+import { DateToUTCDate, GetFormatterForCurrency } from "@/lib/helpers";
 
 interface Props {
   trigger: ReactNode;
   type: Transaction;
+  currentAmount: string;
 }
 
-const CreateDialogTransaction = ({ trigger, type }: Props) => {
+const CreateDialogTransaction = ({ trigger, type, currentAmount }: Props) => {
   const [open, setOpen] = useState(false);
 
   const form = useForm<CreateTransactionSchemaType>({
@@ -58,6 +59,18 @@ const CreateDialogTransaction = ({ trigger, type }: Props) => {
       description: "",
     },
   });
+
+  const formatter = useMemo(
+    () => GetFormatterForCurrency(currentAmount),
+    [currentAmount]
+  );
+
+  const formatFn = useCallback(
+    (value: number) => {
+      return formatter.format(value);
+    },
+    [formatter]
+  );
 
   const handleCategoryChange = useCallback(
     (value: string) => {
@@ -145,11 +158,12 @@ const CreateDialogTransaction = ({ trigger, type }: Props) => {
                     <Input type="number" {...field} />
                   </FormControl>
                   <FormDescription>
-                    Transaction amount (required)
+                    Formatted value: {formatFn(field.value || 0)}
                   </FormDescription>
                 </FormItem>
               )}
             />
+
             <p>
               Transaction Category:
               <span className="font-bold">{form.watch("category")}</span>
@@ -191,7 +205,7 @@ const CreateDialogTransaction = ({ trigger, type }: Props) => {
                             )}
                           >
                             {field.value
-                              ? format(new Date(field.value), "yyyy-MM-dd") // Format the date when selected
+                              ? format(new Date(field.value), "yyyy-MM-dd")
                               : "Pick a Date"}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
